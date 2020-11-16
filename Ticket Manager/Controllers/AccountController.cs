@@ -10,11 +10,11 @@ namespace Ticket_Manager.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-                                 SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager,
+                                 SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -31,7 +31,7 @@ namespace Ticket_Manager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = obj.Email, Email = obj.Email };
+                var user = new ApplicationUser { UserName = obj.Email, Email = obj.Email, FirstName = obj.FirstName, LastName = obj.LastName };
                 var result = await userManager.CreateAsync(user, obj.Password);
 
                 if (result.Succeeded)

@@ -6,6 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Class.cs" />
+    <Compile Remove="Migrations\20201109214855_Extend identity user.cs" />
+    <Compile Remove="Migrations\20201109214855_Extend identity user.Designer.cs" />
+    <Compile Remove="Migrations\20201113020808_AddedProjects.cs" />
+    <Compile Remove="Migrations\20201113020808_AddedProjects.Designer.cs" />
+    <Compile Remove="Migrations\20201113021003_AddingProject.cs" />
+    <Compile Remove="Migrations\20201113021003_AddingProject.Designer.cs" />
+    <Compile Remove="Migrations\20201113022057_chck.cs" />
+    <Compile Remove="Migrations\20201113022057_chck.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
@@ -13,6 +25,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\scss\" />
   </ItemGroup>
 
 </Project>

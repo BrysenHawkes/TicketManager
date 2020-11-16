@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket_Manager.Data;
 using Ticket_Manager.Models;
@@ -22,6 +23,8 @@ namespace Ticket_Manager.Controllers
         public IActionResult Index()
         {
             IEnumerable<Ticket> objList = _db.Ticket;
+            ViewBag.Ticket = _db.Ticket.ToList();
+            ViewBag.Project = _db.Project.ToList();
             return View(objList);
         }
 
@@ -108,6 +111,18 @@ namespace Ticket_Manager.Controllers
         public IActionResult Test()
         {
             return View();
+        }
+
+        // Change Project
+        public IActionResult ChangeProject(int id)
+        {
+            if (Request.Cookies.ContainsKey("CurrentProject"))
+            {
+                Response.Cookies.Delete("CurrentProject");
+            }
+            Response.Cookies.Append("CurrentProject", id.ToString());
+
+            return RedirectToAction("Index");
         }
     }
 }

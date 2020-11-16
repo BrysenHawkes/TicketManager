@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace Ticket_Manager.Models
 {
-    public class Ticket
+    public class Project
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [DisplayName("Name")]
         public string Name { get; set; }
-
-        [Required]
-        [DisplayName("Priority")]
-        public string Priority { get; set; }
-
-        public int ProjectID { get; set; }
     }
 }

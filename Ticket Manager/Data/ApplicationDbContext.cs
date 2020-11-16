@@ -8,7 +8,7 @@ using Ticket_Manager.Models;
 
 namespace Ticket_Manager.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -16,5 +16,6 @@ namespace Ticket_Manager.Data
         }
 
         public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<Project> Project { get; set; }
     }
 }

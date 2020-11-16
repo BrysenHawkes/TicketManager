@@ -11,9 +11,13 @@
             </a>
         </div>
     </div>
-    <br/><br/>
+    <div class="col-12">
+        <form method="post" asp-action="Create">
+        </form>
+    </div>
+    <br /><br />
 
-    @if(Model.Count() > 0)
+    @if (Model.Count() > 0)
     {
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>
@@ -22,28 +26,38 @@
                         Ticket Name
                     </th>
                     <th>
-                        Priority 
+                        Priority
+                    </th>
+                    <th>
+                        Project ID
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach(var obj in Model)
+                @if (Context.Request.Cookies["CurrentProject"] != null)
                 {
-                <tr>
-                    <td width="50%">@obj.Name</td>
-                    <td width="30%">@obj.Priority</td>
-                    <td class="text-center">
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                    @foreach (var obj in Model)
+                    {
+                        @if (obj.ProjectID == int.Parse(Context.Request.Cookies["CurrentProject"]))
+                        {
+                            <tr>
+                                <td>@obj.Name</td>
+                                <td>@obj.Priority</td>
+                                <td>@obj.ProjectID</td>
+                                <td class="text-center">
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
                 }
             </tbody>
         </table>
@@ -52,4 +66,30 @@
     {
         <p>No Tickets Exist</p>
     }
+    @*@if (Context.Request.Cookies.ContainsKey("CurrentProject"))
+    {
+        <div>
+            Detecting Cookie @Context.Request.Cookies["CurrentProject"]
+        </div>
+    }
+    <div>
+        @foreach (Ticket ticket in ViewBag.Ticket)
+        {
+            <ul>
+                <li>
+                    @ticket.Name
+                </li>
+            </ul>
+        }
+    </div>
+    <div>
+        @foreach (Project project in ViewBag.Project)
+        {
+            <ul>
+                <li>
+                    @project.Id
+                </li>
+            </ul>
+        }
+    </div>*@
 </div>

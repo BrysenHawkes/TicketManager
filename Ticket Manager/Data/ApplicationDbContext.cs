@@ -17,5 +17,6 @@ namespace Ticket_Manager.Data
 
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<Project> Project { get; set; }
+        public DbSet<UserProject> UserProject { get; set; }
     }
 }

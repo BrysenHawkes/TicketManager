@@ -5,26 +5,64 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Ticket_Manager.Data;
 using Ticket_Manager.Models;
+using Ticket_Manager.ViewModels;
 
 namespace Ticket_Manager.Controllers
 {
     public class TicketController : Controller
     {
         private readonly ApplicationDbContext _db;
-
-        public TicketController(ApplicationDbContext db)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TicketController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            ViewBag.Project = from p in _db.Project
+                              join up in _db.UserProject
+                              on p.Id equals up.ProjectId
+                              where up.UserId == _userManager.GetUserId(User)
+                              select new ProjectViewModel
+                              {
+                                  Id = p.Id,
+                                  Name = p.Name
+                              };
+            base.OnActionExecuting(context);
         }
 
         public IActionResult Index()
         {
             IEnumerable<Ticket> objList = _db.Ticket;
-            ViewBag.Ticket = _db.Ticket.ToList();
-            ViewBag.Project = _db.Project.ToList();
+            //ViewBag.Ticket = _db.Ticket.ToList();
+            //ViewBag.Project = _db.Project.ToList();
+            //ViewBag.Project = from p in _db.Project 
+            //                  join up in _db.UserProject
+            //                  on p.Id equals up.ProjectId
+            //                  where up.UserId == _userManager.GetUserId(User)
+            //                  select new ProjectViewModel
+            //                  { 
+            //                      Id = p.Id,
+            //                      Name = p.Name
+            //                  };
+            //TicketIndexViewModel obj = new TicketIndexViewModel();
+            //obj.Tickets = _db.Ticket.ToList();
+            //obj.Projects = (List<ProjectViewModel>)(from p in _db.Project 
+            //               join up in _db.UserProject
+            //               on p.Id equals up.ProjectId
+            //               where up.UserId == _userManager.GetUserId(User)
+            //               select new ProjectViewModel
+            //               {
+            //                   Id = p.Id,
+            //                   Name = p.Name
+            //               });
             return View(objList);
         }
 
@@ -104,24 +142,6 @@ namespace Ticket_Manager.Controllers
             }
             _db.Ticket.Remove(obj);
             _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        [Authorize]
-        public IActionResult Test()
-        {
-            return View();
-        }
-
-        // Change Project
-        public IActionResult ChangeProject(int id)
-        {
-            if (Request.Cookies.ContainsKey("CurrentProject"))
-            {
-                Response.Cookies.Delete("CurrentProject");
-            }
-            Response.Cookies.Append("CurrentProject", id.ToString());
-
             return RedirectToAction("Index");
         }
     }

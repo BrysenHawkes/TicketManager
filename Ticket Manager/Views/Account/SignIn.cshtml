@@ -4,21 +4,29 @@
     ViewBag.Title = "User Sign In";
     Layout = "";
 }
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ticket_Manager</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/fontawesome/css/all.css" />
+</head>
 
-<h1>User Sign In</h1>
 
-<div class="row">
-    <div class="col-md-12">
-        <form method="post">
+<form method="post">
+    <div class="form-row p-4">
+        <div class="col-sm-6 mx-auto">
+            <h1>Sign In</h1>
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="text-danger" />
+                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="text-danger" />
+                <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -29,7 +37,8 @@
                     </label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
+            <button type="submit" class="btn btn-outline-dark">Sign In</button>
+            <a asp-controller="account" asp-action="register" class="btn btn-outline-danger">Register</a>
+        </div>
     </div>
-</div>
+</form>

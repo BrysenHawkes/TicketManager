@@ -6,3 +6,14 @@
     <h1 class="display-4">HELLO MADISON</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div>
+    @if(ViewBag.UserId != null)
+    {
+        <h2>Current Signed in user is @ViewBag.UserId</h2>
+    }
+    else
+    {
+        <h2>No user signed in</h2>
+    }
+</div>

@@ -12,12 +12,12 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md navbar-toggleable-sm navbar-custom-color border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ticket_Manager</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ticket Manager</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="fas fa-bars icon-custom"></i>
                 </button>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav">
@@ -26,48 +26,25 @@
                                 Projects
                             </a>
                             <div class="dropdown-menu">
-                                @if (ViewBag.Project == null)
+                                @if (ViewBag.Project != null)
                                 {
-                                    <a class="dropdown-item" href="#">No Projects</a>
-                                    @for (int i = 0; i < 5; i++)
+                                    @foreach (var project in ViewBag.Project)
                                     {
-                                        <a class="dropdown-item" asp-controller="Ticket" asp-action="ChangeProject" asp-route-id="@i">ID = @i</a>
+                                        <a class="dropdown-item" asp-controller="Project" asp-action="ChangeProject" asp-route-id="@project.Id">@project.Name</a>
                                     }
+                                    <div class="dropdown-divider"></div>
                                 }
-                                else
-                                {
-                                    @foreach (Project project in ViewBag.Project)
-                                    {
-                                        <a class="dropdown-item" asp-controller="Ticket" asp-action="ChangeProject" asp-route-id="@project.Id">@project.Name</a>
-                                    }
-                                }
+                                <a class="dropdown-item" asp-controller="Project" asp-action="Create">New Project</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Join Project</a>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="Index">Tickets</a>
+                            <a class="nav-link" asp-area="" asp-controller="Ticket" asp-action="Index">Tickets</a>
                         </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Ticket" asp-action="ChangeProject" asp-route-id="0">Project 0</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Ticket" asp-action="ChangeProject" asp-route-id="1">Project 1</a>
-                        </li>
-                        <li class="nav-item">
-                            @if (ViewBag.Project == null)
-                            { 
-                                <h6 class="text-white">no project</h6>
-                            }
-                            else
-                            {
-                                foreach (Project project in ViewBag.Project)
-                                {
-                                    <h6 class="text-white">@project.Id</h6>
-                                }
-                            }
-                            </li>*@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
@@ -84,10 +61,10 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignIn">Sign In</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="SignIn">Sign In</a>
                             </li>
                         }
                     </ul>

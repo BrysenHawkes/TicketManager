@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ticket_Manager.Models;
 
+
 namespace Ticket_Manager.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -20,12 +23,14 @@ namespace Ticket_Manager.Controllers
             this.signInManager = signInManager;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(Register obj)
         {
@@ -48,12 +53,14 @@ namespace Ticket_Manager.Controllers
             return View(obj);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult SignIn()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> SignInAsync(SignIn obj)
         {

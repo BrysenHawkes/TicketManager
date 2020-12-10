@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Ticket_Manager.Models.Ticket>
+﻿@model Ticket_Manager.ViewModels.TicketIndexViewModel
+
 <div class="container p-3">
     <div class="row pt-4">
         <div class=" col-6">
@@ -16,7 +17,7 @@
     </div>
     <br /><br />
 
-    @if (Model.Count() > 0)
+    @if (Model.Tickets.Count() > 0)
     {
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>
@@ -27,68 +28,80 @@
                     <th>
                         Priority
                     </th>
-                    <th>
-                        Project ID
+                    <th class="d-none d-sm-table-cell">
+                        Reported
                     </th>
-                    <th></th>
+                    <th>
+                        Assignment
+                    </th>
+                    <th>
+                        Due
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    @*<th></th>*@
                 </tr>
             </thead>
             <tbody>
                 @if (Context.Request.Cookies["CurrentProject"] != null)
                 {
-                    @foreach (var obj in Model)
+                    @foreach (var obj in Model.Tickets)
                     {
-                        @if (obj.ProjectID == int.Parse(Context.Request.Cookies["CurrentProject"]))
-                        {
-                            <tr>
-                                <td>@obj.Name</td>
-                                <td>@obj.Priority</td>
-                                <td>@obj.ProjectID</td>
-                                <td class="text-center">
-                                    <div class="w-75 btn-group" role="group">
-                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr data-href="/Ticket/Edit/@obj.Id">
+                            <td>@obj.Name</td>
+                            <td>@obj.Priority</td>
+                            <td class="d-none d-sm-table-cell">
+                                @if (obj.Reported != null)
+                                {
+                                    @obj.Reported
+                                }
+                            </td>
+                            <td>
+                                @if (obj.Assigned != null)
+                                {
+                                    @obj.Assigned
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Unassigned</span>
+                                }
+                            </td>
+                            <td>
+                                @if (obj.Due != null)
+                                {
+                                    @obj.Due
+                                }
+                            </td>
+                            <td>
+                                @if (obj.Status != null)
+                                {
+                                    @obj.Status
+                                }
+                                else
+                                {
+                                    <span>NA</span>
+                                }
+                            </td>
+                            @*<td class="text-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>*@
+                        </tr>
+
                         }
-                    }
-                }
-            </tbody>
+                        }
+                    </tbody>
         </table>
     }
     else
     {
         <p>No Tickets Exist</p>
     }
-    @*@if (Context.Request.Cookies.ContainsKey("CurrentProject"))
-    {
-        <div>
-            Detecting Cookie @Context.Request.Cookies["CurrentProject"]
-        </div>
-    }
-    <div>
-        @foreach (Ticket ticket in ViewBag.Ticket)
-        {
-            <ul>
-                <li>
-                    @ticket.Name
-                </li>
-            </ul>
-        }
-    </div>
-    <div>
-        @foreach (Project project in ViewBag.Project)
-        {
-            <ul>
-                <li>
-                    @project.Id
-                </li>
-            </ul>
-        }
-    </div>*@
 </div>

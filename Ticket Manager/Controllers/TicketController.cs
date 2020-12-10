@@ -30,7 +30,7 @@ namespace Ticket_Manager.Controllers
                               join up in _db.UserProject
                               on p.Id equals up.ProjectId
                               where up.UserId == _userManager.GetUserId(User)
-                              select new ProjectViewModel
+                              select new ListProjectViewModel
                               {
                                   Id = p.Id,
                                   Name = p.Name
@@ -40,7 +40,26 @@ namespace Ticket_Manager.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Ticket> objList = _db.Ticket;
+            if (!Request.Cookies.ContainsKey("CurrentProject"))
+            {
+                return RedirectToAction("Index", "Project");
+            }
+            TicketIndexViewModel ticketIndexViewModel = new TicketIndexViewModel();
+            ticketIndexViewModel.Tickets = from t in _db.Ticket
+                                           join u in _db.Users
+                                           on t.AssignedTo equals u.Id into tu
+                                           from u in tu.DefaultIfEmpty()
+                                           where t.ProjectID == int.Parse(Request.Cookies["CurrentProject"])
+                                           select new ListTicketViewModel
+                                           {
+                                               Id = t.Id,
+                                               Name = t.Name,
+                                               Reported = t.ReportedDate.ToShortDateString(),
+                                               Assigned = u.FirstName + " " + u.LastName,
+                                               Due = t.DueDate.ToShortDateString(),
+                                               Priority = t.Priority,
+                                               Status = t.Status
+                                           };
             //ViewBag.Ticket = _db.Ticket.ToList();
             //ViewBag.Project = _db.Project.ToList();
             //ViewBag.Project = from p in _db.Project 
@@ -63,12 +82,27 @@ namespace Ticket_Manager.Controllers
             //                   Id = p.Id,
             //                   Name = p.Name
             //               });
-            return View(objList);
+            return View(ticketIndexViewModel);
         }
 
         // Get - Create
         public IActionResult Create()
         {
+            if (!Request.Cookies.ContainsKey("CurrentProject"))
+            {
+                return RedirectToAction("Index", "Project");
+            }
+            ViewBag.Users = from up in _db.UserProject
+                            join u in _db.Users
+                            on up.UserId equals u.Id
+                            where up.ProjectId == int.Parse(Request.Cookies["CurrentProject"])
+                            select new ListPeopleViewModel
+                            {
+                                Id = u.Id,
+                                FirstName = u.FirstName,
+                                LastName = u.LastName,
+                            };
+            
             return View();
         }
 
@@ -79,6 +113,16 @@ namespace Ticket_Manager.Controllers
         {
             if(ModelState.IsValid)
             {
+                obj.ReportedDate = DateTime.Now;
+                obj.ProjectID = int.Parse(Request.Cookies["CurrentProject"]);
+                obj.ReportedBy = _userManager.GetUserId(User);
+                if (obj.AssignedTo == null) {
+                    obj.Status = "Unassigned";
+                } 
+                else
+                {
+                    obj.Status = "Assigned";
+                }
                 _db.Ticket.Add(obj);
                 _db.SaveChanges();
                 return RedirectToAction("Index");

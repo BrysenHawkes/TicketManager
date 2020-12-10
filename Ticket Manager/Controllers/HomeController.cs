@@ -34,7 +34,7 @@ namespace Ticket_Manager.Controllers
                               join up in _db.UserProject
                               on p.Id equals up.ProjectId
                               where up.UserId == _userManager.GetUserId(User)
-                              select new ProjectViewModel
+                              select new ListProjectViewModel
                               {
                                   Id = p.Id,
                                   Name = p.Name

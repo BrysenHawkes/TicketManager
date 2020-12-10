@@ -14,5 +14,7 @@ namespace Ticket_Manager.Models
 
         [Required]
         public string Name { get; set; }
+
+        public string JoinId { get; set; }
     }
 }

@@ -16,10 +16,24 @@ namespace Ticket_Manager.Models
         [DisplayName("Name")]
         public string Name { get; set; }
 
+        [DisplayName ("Reported")]
+        public DateTime ReportedDate { get; set; }
+
+        [DisplayName ("Reporter")]
+        public string ReportedBy { get; set; }
+
+        [DisplayName("Due")]
+        public DateTime DueDate { get; set; }
+
+        [DisplayName ("Assignment")]
+        public string AssignedTo { get; set; }
+
         [Required]
         [DisplayName("Priority")]
         public string Priority { get; set; }
 
+        [DisplayName("Status")]
+        public string Status { get; set; }
         public int ProjectID { get; set; }
     }
 }

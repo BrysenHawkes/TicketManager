@@ -1,0 +1,28 @@
+﻿
+<form method="post" asp-action="Join">
+    <div class="form-group row">
+        <h2 class="text-infor pl-3">Join Project</h2>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label for="JoinId">Project ID</label>
+                </div>
+                <div class="col-8">
+                    <input id="ProjectId" name="JoinId" class="form-control" />
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Join" />
+                        </div>
+                        <div class="col">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-success w-100">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</form>

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Ticket_Manager.ViewModels
 {
-    public class ProjectViewModel
+    public class PeopleIndexViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public IEnumerable<ListPeopleViewModel> PeopleInProject;
+        public string JoinId;
     }
 }

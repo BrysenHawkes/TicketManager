@@ -42,7 +42,7 @@ namespace Ticket_Manager.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("index", "project");
                 }
 
                 foreach (var error in result.Errors)
@@ -70,7 +70,7 @@ namespace Ticket_Manager.Controllers
                 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("index", "project");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
@@ -82,7 +82,7 @@ namespace Ticket_Manager.Controllers
         public async Task<IActionResult> SignOut ()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
+            return RedirectToAction("SignIn", "Account");
         }
     }
 }

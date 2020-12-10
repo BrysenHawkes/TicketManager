@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ticket_Manager.Models;
 
 namespace Ticket_Manager.ViewModels
 {
-    public class TicketIndexViewModel
+    public class ListProjectViewModel
     {
-        public IEnumerable<ListTicketViewModel> Tickets { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

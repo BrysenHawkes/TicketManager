@@ -38,7 +38,7 @@ namespace Ticket_Manager.Controllers
             base.OnActionExecuting(context);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string SortBy)
         {
             if (!Request.Cookies.ContainsKey("CurrentProject"))
             {
@@ -60,28 +60,55 @@ namespace Ticket_Manager.Controllers
                                                Priority = t.Priority,
                                                Status = t.Status
                                            };
-            //ViewBag.Ticket = _db.Ticket.ToList();
-            //ViewBag.Project = _db.Project.ToList();
-            //ViewBag.Project = from p in _db.Project 
-            //                  join up in _db.UserProject
-            //                  on p.Id equals up.ProjectId
-            //                  where up.UserId == _userManager.GetUserId(User)
-            //                  select new ProjectViewModel
-            //                  { 
-            //                      Id = p.Id,
-            //                      Name = p.Name
-            //                  };
-            //TicketIndexViewModel obj = new TicketIndexViewModel();
-            //obj.Tickets = _db.Ticket.ToList();
-            //obj.Projects = (List<ProjectViewModel>)(from p in _db.Project 
-            //               join up in _db.UserProject
-            //               on p.Id equals up.ProjectId
-            //               where up.UserId == _userManager.GetUserId(User)
-            //               select new ProjectViewModel
-            //               {
-            //                   Id = p.Id,
-            //                   Name = p.Name
-            //               });
+            // Set switch logic for view
+            ViewData["Name"] = String.IsNullOrEmpty(SortBy) ? "name_desc" : "";
+            ViewData["Priority"] = SortBy == "priority" ? "priority_desc" : "priority";
+            ViewData["Reported"] = SortBy == "reported" ? "reported_desc" : "reported";
+            ViewData["Assignment"] = SortBy == "assignment" ? "assignment_desc" : "assignment";
+            ViewData["Due"] = SortBy == "due" ? "due_desc" : "due";
+            ViewData["Status"] = SortBy == "status" ? "status_desc" : "status";
+            ViewData["LastSort"] = String.IsNullOrEmpty(SortBy) ? "name" : SortBy;
+
+            // Sort data
+            switch (SortBy)
+            {
+                case "name_desc":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderByDescending(t => t.Name);
+                    break;
+                case "priority":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderBy(t => t.Priority);
+                    break;
+                case "priority_desc":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderByDescending(t => t.Priority);
+                    break;
+                case "reported":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderBy(t => t.Reported);
+                    break;
+                case "reported_desc":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderByDescending(t => t.Reported);
+                    break;
+                case "assignment":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderBy(t => t.Assigned);
+                    break;
+                case "assignment_desc":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderByDescending(t => t.Assigned);
+                    break;
+                case "due":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderBy(t => t.Due);
+                    break;
+                case "due_desc":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderByDescending(t => t.Due);
+                    break;
+                case "status":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderBy(t => t.Status);
+                    break;
+                case "status_desc":
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderByDescending(t => t.Status);
+                    break;
+                default:
+                    ticketIndexViewModel.Tickets = ticketIndexViewModel.Tickets.OrderBy(t => t.Name);
+                    break;
+            }
             return View(ticketIndexViewModel);
         }
 
@@ -149,7 +176,7 @@ namespace Ticket_Manager.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Ticket obj)
-        {
+        {  
             if (ModelState.IsValid)
             {
                 _db.Ticket.Update(obj);

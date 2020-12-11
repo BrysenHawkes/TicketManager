@@ -9,37 +9,38 @@
             <h2>Invite Code: @Model.JoinId</h2>
         </div>
     </div>
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
+    <br />
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model.PeopleInProject)
+            {
                 <tr>
-                    <th>
-                        First Name
-                    </th>
-                    <th>
-                        Last Name
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th></th>
+                    <td>@obj.FirstName</td>
+                    <td>@obj.LastName</td>
+                    <td>@obj.Email</td>
+                    <td class="text-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Ticket" asp-route-Id="@obj.UserProjectId" asp-action="Delete" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                    @foreach (var obj in Model.PeopleInProject)
-                    {
-                            <tr>
-                                <td>@obj.FirstName</td>
-                                <td>@obj.LastName</td>
-                                <td>@obj.Email</td>
-                                <td class="text-center">
-                                    <div class="w-75 btn-group" role="group">
-                                        <a asp-controller="Ticket" asp-route-Id="@obj.UserProjectId" asp-action="Delete" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                    }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 </div>

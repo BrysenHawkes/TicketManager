@@ -53,7 +53,7 @@
             </a>
         </div>
     </div>
-    <br /><br />
+    <br />
           <div class="row">
               <div class="card m-3">
                   <ul class="list-group list-group-flush">
@@ -96,31 +96,114 @@
                   </ul>
               </div>
           </div>
-              <br /><br />
+              <br />
               @if (Model.Tickets.Count() > 0)
               {
                   <table class="table table-bordered table-striped">
                       <thead>
                           <tr>
                               <th>
-                                  Ticket Name
+                                  <a asp-action="Index" asp-route-sortBy="@ViewData["Name"]">
+                                      Ticket Name
+                                      @if (ViewData["LastSort"].ToString() == "name")
+                                      {
+                                          <i class="fa fa-sort-down"></i>
+                                      }
+                                      else if (ViewData["LastSort"].ToString() == "name_desc")
+                                      {
+                                          <i class="fa fa-sort-up"></i>
+                                      }
+                                      else
+                                      {
+                                          <i class="fa fa-sort"></i>
+                                      }
+                                  </a>
                               </th>
                               <th>
-                                  Priority
+                                  <a asp-action="Index" asp-route-sortBy="@ViewData["Priority"]">
+                                      Priority
+                                      @if (ViewData["LastSort"].ToString() == "priority")
+                                      {
+                                          <i class="fa fa-sort-down"></i>
+                                      }
+                                      else if (ViewData["LastSort"].ToString() == "priority_desc")
+                                      {
+                                          <i class="fa fa-sort-up"></i>
+                                      }
+                                      else
+                                      {
+                                          <i class="fa fa-sort"></i>
+                                      }
+                                  </a>
                               </th>
                               <th class="d-none d-sm-table-cell">
-                                  Reported
+                                  <a asp-action="Index" asp-route-sortBy="@ViewData["Reported"]">
+                                      Reported
+                                      @if (ViewData["LastSort"].ToString() == "reported")
+                                      {
+                                          <i class="fa fa-sort-down"></i>
+                                      }
+                                      else if (ViewData["LastSort"].ToString() == "reported_desc")
+                                      {
+                                          <i class="fa fa-sort-up"></i>
+                                      }
+                                      else
+                                      {
+                                          <i class="fa fa-sort"></i>
+                                      }
+                                  </a>
                               </th>
                               <th>
-                                  Assignment
+                                  <a asp-action="Index" asp-route-sortBy="@ViewData["Assignment"]">
+                                      Assignment
+                                      @if (ViewData["LastSort"].ToString() == "assignment")
+                                      {
+                                          <i class="fa fa-sort-down"></i>
+                                      }
+                                      else if (ViewData["LastSort"].ToString() == "assignment_desc")
+                                      {
+                                          <i class="fa fa-sort-up"></i>
+                                      }
+                                      else
+                                      {
+                                          <i class="fa fa-sort"></i>
+                                      }
+                                  </a>
                               </th>
                               <th>
-                                  Due
+                                  <a asp-action="Index" asp-route-sortBy="@ViewData["Due"]">
+                                      Due
+                                      @if (ViewData["LastSort"].ToString() == "due")
+                                      {
+                                          <i class="fa fa-sort-down"></i>
+                                      }
+                                      else if (ViewData["LastSort"].ToString() == "due_desc")
+                                      {
+                                          <i class="fa fa-sort-up"></i>
+                                      }
+                                      else
+                                      {
+                                          <i class="fa fa-sort"></i>
+                                      }
+                                  </a>
                               </th>
                               <th>
-                                  Status
+                                  <a asp-action="Index" asp-route-sortBy="@ViewData["Status"]">
+                                      Status
+                                      @if (ViewData["LastSort"].ToString() == "status")
+                                      {
+                                          <i class="fa fa-sort-down"></i>
+                                      }
+                                      else if (ViewData["LastSort"].ToString() == "status_desc")
+                                      {
+                                          <i class="fa fa-sort-up"></i>
+                                      }
+                                      else
+                                      {
+                                          <i class="fa fa-sort"></i>
+                                      }
+                                  </a>
                               </th>
-                              @*<th></th>*@
                           </tr>
                       </thead>
                       <tbody>
@@ -163,18 +246,7 @@
                                               <span>NA</span>
                                           }
                                       </td>
-                                      @*<td class="text-center">
-                                    <div class="w-75 btn-group" role="group">
-                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </div>
-                                </td>*@
                                   </tr>
-
                               }
                           }
                       </tbody>

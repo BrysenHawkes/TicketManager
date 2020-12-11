@@ -1,6 +1,48 @@
 ﻿@model Ticket_Manager.ViewModels.TicketIndexViewModel
-
-<div class="container p-3">
+@{
+    int NumOpen = new int();
+    int NumClosed = new int();
+    int NumUnassigned = new int();
+    int NumAssigned = new int();
+    int NumActive = new int();
+    int NumResolved = new int();
+    int NumOverdue = new int();
+    int NumNextSevenDays = new int();
+    foreach (var obj in Model.Tickets)
+    {
+        switch (obj.Status)
+        {
+            case "Unassigned":
+                NumUnassigned++;
+                NumOpen++;
+                break;
+            case "Assigned":
+                NumAssigned++;
+                NumOpen++;
+                break;
+            case "Active":
+                NumActive++;
+                NumOpen++;
+                break;
+            case "Resolved":
+                NumResolved++;
+                NumOpen++;
+                break;
+            case "Closed":
+                NumClosed++;
+                break;
+        }
+        if (DateTime.Compare(DateTime.Parse(obj.Due), DateTime.Now) < 0)
+        {
+            NumOverdue++;
+        }
+        else if (DateTime.Compare(DateTime.Parse(obj.Due).AddDays(7), DateTime.Now) < 0)
+        {
+            NumNextSevenDays++;
+        }
+    }
+}
+<div class="container p-1">
     <div class="row pt-4">
         <div class=" col-6">
             <h2>Ticket List</h2>
@@ -11,97 +53,135 @@
             </a>
         </div>
     </div>
-    <div class="col-12">
-        <form method="post" asp-action="Create">
-        </form>
-    </div>
     <br /><br />
+          <div class="row">
+              <div class="card m-3">
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Overdue &nbsp;
+                          <span class="badge badge-danger badge-pill">@NumOverdue</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Next 7 Days &nbsp;
+                          <span class="badge badge-warning badge-pill">@NumNextSevenDays</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Open &nbsp;
+                          <span class="badge badge-primary badge-pill">@NumOpen</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Closed &nbsp;
+                          <span class="badge badge-primary badge-pill">@NumClosed</span>
+                      </li>
+                  </ul>
+              </div>
+              <div class="card m-3">
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Unassigned &nbsp;
+                          <span class="badge badge-primary badge-pill">@NumUnassigned</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Assigned &nbsp;
+                          <span class="badge badge-primary badge-pill">@NumAssigned</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Active &nbsp;
+                          <span class="badge badge-primary badge-pill">@NumActive</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                          Resolved &nbsp;
+                          <span class="badge badge-primary badge-pill">@NumResolved</span>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+              <br /><br />
+              @if (Model.Tickets.Count() > 0)
+              {
+                  <table class="table table-bordered table-striped">
+                      <thead>
+                          <tr>
+                              <th>
+                                  Ticket Name
+                              </th>
+                              <th>
+                                  Priority
+                              </th>
+                              <th class="d-none d-sm-table-cell">
+                                  Reported
+                              </th>
+                              <th>
+                                  Assignment
+                              </th>
+                              <th>
+                                  Due
+                              </th>
+                              <th>
+                                  Status
+                              </th>
+                              @*<th></th>*@
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if (Context.Request.Cookies["CurrentProject"] != null)
+                          {
+                              @foreach (var obj in Model.Tickets)
+                              {
+                                  <tr data-href="/Ticket/Edit/@obj.Id">
+                                      <td>@obj.Name</td>
+                                      <td>@obj.Priority</td>
+                                      <td class="d-none d-sm-table-cell">
+                                          @if (obj.Reported != null)
+                                          {
+                                              @obj.Reported
+                                          }
+                                      </td>
+                                      <td>
+                                          @if (obj.Assigned != null)
+                                          {
+                                              @obj.Assigned
+                                          }
+                                          else
+                                          {
+                                              <span class="text-danger">Unassigned</span>
+                                          }
+                                      </td>
+                                      <td>
+                                          @if (obj.Due != null)
+                                          {
+                                              @obj.Due
+                                          }
+                                      </td>
+                                      <td>
+                                          @if (obj.Status != null)
+                                          {
+                                              @obj.Status
+                                          }
+                                          else
+                                          {
+                                              <span>NA</span>
+                                          }
+                                      </td>
+                                      @*<td class="text-center">
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>*@
+                                  </tr>
 
-    @if (Model.Tickets.Count() > 0)
-    {
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>
-                        Ticket Name
-                    </th>
-                    <th>
-                        Priority
-                    </th>
-                    <th class="d-none d-sm-table-cell">
-                        Reported
-                    </th>
-                    <th>
-                        Assignment
-                    </th>
-                    <th>
-                        Due
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    @*<th></th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @if (Context.Request.Cookies["CurrentProject"] != null)
-                {
-                    @foreach (var obj in Model.Tickets)
-                    {
-                        <tr data-href="/Ticket/Edit/@obj.Id">
-                            <td>@obj.Name</td>
-                            <td>@obj.Priority</td>
-                            <td class="d-none d-sm-table-cell">
-                                @if (obj.Reported != null)
-                                {
-                                    @obj.Reported
-                                }
-                            </td>
-                            <td>
-                                @if (obj.Assigned != null)
-                                {
-                                    @obj.Assigned
-                                }
-                                else
-                                {
-                                    <span class="text-danger">Unassigned</span>
-                                }
-                            </td>
-                            <td>
-                                @if (obj.Due != null)
-                                {
-                                    @obj.Due
-                                }
-                            </td>
-                            <td>
-                                @if (obj.Status != null)
-                                {
-                                    @obj.Status
-                                }
-                                else
-                                {
-                                    <span>NA</span>
-                                }
-                            </td>
-                            @*<td class="text-center">
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Edit" class="btn btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a asp-controller="Ticket" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </div>
-                    </td>*@
-                        </tr>
-
-                        }
-                        }
-                    </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No Tickets Exist</p>
-    }
-</div>
+                              }
+                          }
+                      </tbody>
+                  </table>
+              }
+              else
+              {
+                  <p>No Tickets Exist</p>
+              }
+          </div>

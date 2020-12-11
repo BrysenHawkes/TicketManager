@@ -79,13 +79,22 @@ namespace Ticket_Manager.Controllers
         // Change Project
         public IActionResult ChangeProject(int id)
         {
-            if (Request.Cookies.ContainsKey("CurrentProject"))
+            // Check if user is part of project
+            if ((from up in _db.UserProject
+                 where up.ProjectId == id 
+                 && up.UserId == _userManager.GetUserId(User)
+                 select up).Any())
             {
-                Response.Cookies.Delete("CurrentProject");
-            }
-            Response.Cookies.Append("CurrentProject", id.ToString());
+                // Change Current Project Cookie
+                if (Request.Cookies.ContainsKey("CurrentProject"))
+                {
+                    Response.Cookies.Delete("CurrentProject");
+                }
+                Response.Cookies.Append("CurrentProject", id.ToString());
 
-            return RedirectToAction("Index", "Ticket");
+                return RedirectToAction("Index", "Ticket");
+            }
+            return RedirectToAction("Index", "Project");
         }
 
         // GET - Project

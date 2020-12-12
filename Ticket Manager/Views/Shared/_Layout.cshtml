@@ -23,7 +23,14 @@
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                                Projects
+                                @if (Context.Request.Cookies.ContainsKey("ProjectName"))
+                                {
+                                    @Context.Request.Cookies["ProjectName"]
+                                }
+                                else
+                                {
+                                    <span>Project</span>
+                                }
                             </a>
                             <div class="dropdown-menu">
                                 @if (ViewBag.Project != null)
@@ -38,9 +45,6 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" asp-controller="Project" asp-action="Join">Join Project</a>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Ticket" asp-action="Index">Tickets</a>

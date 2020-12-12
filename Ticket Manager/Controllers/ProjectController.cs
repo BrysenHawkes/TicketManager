@@ -70,6 +70,13 @@ namespace Ticket_Manager.Controllers
                     Response.Cookies.Delete("CurrentProject");
                 }
                 Response.Cookies.Append("CurrentProject", obj.Id.ToString());
+                if (Request.Cookies.ContainsKey("ProjectName"))
+                {
+                    Response.Cookies.Delete("ProjectName");
+                }
+                Response.Cookies.Append("ProjectName", (from p in _db.Project
+                                                        where p.Id == obj.Id
+                                                        select p.Name).FirstOrDefault());
 
                 return RedirectToAction("Index", "Ticket");
             }
@@ -91,6 +98,14 @@ namespace Ticket_Manager.Controllers
                     Response.Cookies.Delete("CurrentProject");
                 }
                 Response.Cookies.Append("CurrentProject", id.ToString());
+
+                if (Request.Cookies.ContainsKey("ProjectName"))
+                {
+                    Response.Cookies.Delete("ProjectName");
+                }
+                Response.Cookies.Append("ProjectName", (from p in _db.Project
+                                                        where p.Id == id
+                                                        select p.Name).FirstOrDefault());
 
                 return RedirectToAction("Index", "Ticket");
             }
@@ -129,6 +144,15 @@ namespace Ticket_Manager.Controllers
                     Response.Cookies.Delete("CurrentProject");
                 }
                 Response.Cookies.Append("CurrentProject", ProjectToJoin.Value.ToString());
+
+                if (Request.Cookies.ContainsKey("ProjectName"))
+                {
+                    Response.Cookies.Delete("ProjectName");
+                }
+                Response.Cookies.Append("ProjectName", (from p in _db.Project
+                                                        where p.Id == ProjectToJoin
+                                                        select p.Name).FirstOrDefault());
+
                 return RedirectToAction("Index", "Ticket");
             }
             return View();

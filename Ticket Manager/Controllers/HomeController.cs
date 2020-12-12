@@ -44,6 +44,7 @@ namespace Ticket_Manager.Controllers
 
         public IActionResult Index()
         {
+            return RedirectToAction("index","Project");
             ViewBag.UserId = _userManager.GetUserId(User);
             return View();
         }

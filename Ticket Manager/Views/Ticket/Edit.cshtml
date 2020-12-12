@@ -2,11 +2,14 @@
 
 <form method="post">
     <input asp-for="Id" hidden />
+    <input asp-for="ProjectID" hidden />
+    <input asp-for="ReportedDate" hidden />
     <div class="border p-3">
         <div class="form-group row">
             <h2 class="text-info pl-3">Edit Ticket</h2>
         </div>
         <div class="row">
+
             <div class="col-8">
                 <div class="form-group row">
                     <div class="col-4">
@@ -17,13 +20,43 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="Priority"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Priority" class="form-control" />
+                        <select asp-for="Priority" class="form-control">
+                            <option value="Low">Low</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
                         <span asp-validation-for="Priority" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="AssignedTo"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="AssignedTo" class="form-control">
+                            @foreach (var obj in ViewBag.Users)
+                            {
+                                <option value="@obj.Id">@obj.FirstName @obj.LastName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="AssignedTo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="DueDate"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="DueDate" class="form-control" />
+                        <span asp-validation-for="DueDate" class="text-danger"></span>
                     </div>
                 </div>
 
@@ -37,6 +70,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="col-4">
                 @* *@

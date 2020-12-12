@@ -1,0 +1,80 @@
+﻿@model Ticket_Manager.ViewModels.ListTicketViewModel
+<div class="container">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Ticket Name
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th class="d-none d-sm-table-cell">
+                    Reported
+                </th>
+                <th>
+                    Assignment
+                </th>
+                <th>
+                    Due
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Name</td>
+                <td>@Model.Priority</td>
+                <td class="d-none d-sm-table-cell">
+                    @if (Model.Reported != null)
+                    {
+                        @Model.Reported
+                    }
+                </td>
+                <td>
+                    @if (Model.Assigned != null)
+                    {
+                        @Model.Assigned
+                    }
+                    else
+                    {
+                        <span class="text-danger">Unassigned</span>
+                    }
+                </td>
+                <td>
+                    @if (Model.Due != null)
+                    {
+                        @Model.Due
+                    }
+                </td>
+                <td>
+                    @if (Model.Status != null)
+                    {
+                        @Model.Status
+                    }
+                    else
+                    {
+                        <span>NA</span>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a asp-action="Index" class="btn btn-outline-dark">Back</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+    @if (Model.Status == "Assigned")
+    {
+        <a asp-action="NextStatus" asp-route-id="@Model.Id" class="btn btn-success float-right">Move To Active</a>
+    }
+    else if (Model.Status == "Active")
+    {
+        <a asp-action="NextStatus" asp-route-id="@Model.Id" class="btn btn-success float-right">Move To Resolved</a>
+    }
+    else if (Model.Status == "Resolved")
+    {
+        <a asp-action="NextStatus" asp-route-id="@Model.Id" class="btn btn-success float-right">Move To Closed</a>
+    }
+</div>

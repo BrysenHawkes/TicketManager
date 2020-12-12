@@ -32,6 +32,17 @@ for details on configuring this project to bundle and minify static web assets. 
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.background {
+    background-color: #202020;
+    position: absolute;
+}
+
+.diagonal {
+    position: absolute;
+    background: #ffe5b3;
+    clip-path: polygon(0 0, 60% 0, 40% 100%, 0 100%);
+}
+
 .navbar-custom-color{
     background-color: #202020;
 }

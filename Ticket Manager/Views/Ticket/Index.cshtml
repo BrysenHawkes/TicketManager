@@ -46,6 +46,7 @@
     <div class="row pt-4">
         <div class=" col-6">
             <h2>Ticket List</h2>
+            <h4>Project Name</h4>
         </div>
         <div class=" col-6 text-right">
             <a asp-controller="Ticket" asp-action="Create" class="btn btn-outline-dark">
@@ -211,7 +212,7 @@
                           {
                               @foreach (var obj in Model.Tickets)
                               {
-                                  <tr data-href="/Ticket/Edit/@obj.Id">
+                                  <tr data-href="/Ticket/Details/@obj.Id">
                                       <td>@obj.Name</td>
                                       <td>@obj.Priority</td>
                                       <td class="d-none d-sm-table-cell">

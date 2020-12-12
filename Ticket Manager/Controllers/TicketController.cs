@@ -119,6 +119,7 @@ namespace Ticket_Manager.Controllers
             {
                 return RedirectToAction("Index", "Project");
             }
+
             ViewBag.Users = from up in _db.UserProject
                             join u in _db.Users
                             on up.UserId equals u.Id
@@ -169,6 +170,18 @@ namespace Ticket_Manager.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.Users = from up in _db.UserProject
+                            join u in _db.Users
+                            on up.UserId equals u.Id
+                            where up.ProjectId == int.Parse(Request.Cookies["CurrentProject"])
+                            select new ListPeopleViewModel
+                            {
+                                Id = u.Id,
+                                FirstName = u.FirstName,
+                                LastName = u.LastName,
+                            };
+
             return View(obj);
         }
 
@@ -214,6 +227,63 @@ namespace Ticket_Manager.Controllers
             _db.Ticket.Remove(obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // Get - Details
+        public IActionResult Details(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            ListTicketViewModel obj = (from t in _db.Ticket
+                                      join u in _db.Users
+                                      on t.AssignedTo equals u.Id into tu
+                                      from u in tu.DefaultIfEmpty()
+                                      where t.Id == id
+                                      select new ListTicketViewModel
+                                      {
+                                          Id = t.Id,
+                                          Name = t.Name,
+                                          Reported = t.ReportedDate.ToShortDateString(),
+                                          Assigned = u.FirstName + " " + u.LastName,
+                                          Due = t.DueDate.ToShortDateString(),
+                                          Priority = t.Priority,
+                                          Status = t.Status
+                                      }).FirstOrDefault();
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        public IActionResult NextStatus(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Ticket.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            switch (obj.Status)
+            {
+                case ("Assigned"):
+                    obj.Status = "Active";
+                    break;
+                case ("Active"):
+                    obj.Status = "Resolved";
+                    break;
+                case ("Resolved"):
+                    obj.Status = "Closed";
+                    break;
+            }
+            _db.Ticket.Update(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Details","Ticket",new { id });
         }
     }
 }

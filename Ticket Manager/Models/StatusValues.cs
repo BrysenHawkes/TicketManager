@@ -9,7 +9,7 @@ namespace Ticket_Manager.Models
     {
         Unnassigned,
         Assigned,
-        In_Progress,
+        Active,
         Resolved,
         Closed,
         Cancelled
